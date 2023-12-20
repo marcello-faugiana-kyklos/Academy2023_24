@@ -16,7 +16,19 @@ void PrintToConsole(object? item)
 
 
 Point2D p1 = new Point2D();
+
+
 object zero_o = Point2D.Zero;
+
+
+Point2D.ComputeDistanceBetweenPoints(p1, Point2D.Zero);
+
+Point2D.ComputeDistanceBetweenPoints(Point2D.Zero, p1);
+p1.DistanceFromOtherPoint(Point2D.Zero);
+Point2D.Zero.DistanceFromOtherPoint(p1);
+
+
+
 Console.WriteLine(p1.Equals(zero_o));
 
 //for (int i = 0; i < 100_000_000; i++)
@@ -49,6 +61,9 @@ catch (Exception ex)
 	distance_5_1 = 0;
 }
 
+p1.DistanceFromOtherPoint(p5);
+
+Point2D.ComputeDistanceBetweenPoints(p1, p5);
 
 
 //try

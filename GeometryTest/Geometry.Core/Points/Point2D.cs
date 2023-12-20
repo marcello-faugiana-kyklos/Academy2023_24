@@ -108,20 +108,41 @@ public class Point2D : IEquatable<Point2D>
     // KISS Keep It Simple Stupid
 
     public double DistanceFromOrigin() =>
-        DistanceFromOtherPoint(Zero);
+        DistanceFromOtherPoint(new Point2D());
 
 
-    public double DistanceFromOtherPoint(Point2D other)
+    public double DistanceFromOtherPoint(Point2D other) =>
+        ComputeDistanceBetweenPoints(this, other);
+    //{
+    //    if (other is null)
+    //    {
+    //        throw new ArgumentNullException(nameof(other));
+    //    }
+
+    //    double sumOfSquaresOfDifferences = 
+    //        Math.Pow(X - other.X, 2)
+    //        +
+    //        Math.Pow(Y - other.Y, 2);
+
+    //    return Math.Sqrt(sumOfSquaresOfDifferences);
+    //}
+
+    public static double ComputeDistanceBetweenPoints(Point2D p1, Point2D p2)
     {
-        if (other is null)
+        if (p1 is null)
         {
-            throw new ArgumentNullException(nameof(other));
+            throw new ArgumentNullException(nameof(p1));
         }
 
-        double sumOfSquaresOfDifferences = 
-            Math.Pow(X - other.X, 2)
+        if (p2 is null)
+        {
+            throw new ArgumentNullException(nameof(p2));
+        }
+
+        double sumOfSquaresOfDifferences =
+            Math.Pow(p1.X - p2.X, 2)
             +
-            Math.Pow(Y - other.Y, 2);
+            Math.Pow(p1.Y - p2.Y, 2);
 
         return Math.Sqrt(sumOfSquaresOfDifferences);
     }
