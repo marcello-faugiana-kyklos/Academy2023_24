@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Geometry.Core\Geometry.Core.csproj" />
+    <ProjectReference Include="..\FiscalCode.Core\FiscalCode.Core.csproj" />
   </ItemGroup>
 
 </Project>

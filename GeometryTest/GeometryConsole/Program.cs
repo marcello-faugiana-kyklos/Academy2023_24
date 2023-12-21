@@ -130,3 +130,42 @@ Console.WriteLine(p1.Equals(p2));
 
 
 // TDD Test Driven Development
+
+
+interface A
+{
+	
+}
+
+interface B : A
+{
+	public int M1();
+}
+
+interface C  : A
+{
+	public int M1();
+}
+
+class D : B, C
+{
+    public int M1()
+    {
+		return 1;
+    }
+}
+
+
+/*
+ *           A
+ *          / \
+ *         B   C
+ *          \ /
+ *           D
+ *  
+ * 
+ *  D d = new D();
+ * 
+ * d.M1();
+ * 
+ */
