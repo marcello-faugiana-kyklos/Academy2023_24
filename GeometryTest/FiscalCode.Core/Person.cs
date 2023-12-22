@@ -21,8 +21,6 @@ public class Person
         PlaceOfBirth = placeOfBirth;
     }
 
-    // private static readonly char[] AllowedChars = 
-
     private static readonly ISet<char> AllowedChars = 
         new HashSet<char>
         {
@@ -37,7 +35,7 @@ public class Person
             'y', 'z',
             'à', 'è', 'é',
             'ì', 'ò', 'ù',
-            '\''
+            '\'', ' '
         };
 
     private static void ValidateString(string value, string parameterName)
@@ -47,19 +45,24 @@ public class Person
             throw new ArgumentNullException(parameterName);
         }
 
-        foreach (char c in value)
+        //foreach (char c in value)
+        //{
+        //    if (!AllowedChars.Contains(char.ToLower(c)))
+        //    {
+        //        throw new ArgumentException($"{parameterName} contains invalid chars: {c}");
+        //    }
+        //}
+
+        //Enumerable.All(value, c => AllowedChars.Contains(char.ToLower(c))))
+
+        if (!value.All(c => AllowedChars.Contains(char.ToLower(c))))
         {
-            if (!AllowedChars.Contains(char.ToLower(c)))
-            {
-                throw new ArgumentException($"{parameterName} contains invalid chars: {c}");
-            }
+            throw new ArgumentException($"{parameterName} contains invalid chars");
+        }
+
+        if (value.Length < 2)
+        {
+            throw new ArgumentException($"{parameterName} must be at least 2 chars");
         }
     }
-
-}
-
-public enum Gender
-{
-    Male,
-    Female
 }
