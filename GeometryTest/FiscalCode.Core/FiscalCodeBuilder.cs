@@ -1,6 +1,4 @@
-﻿
-
-namespace FiscalCode.Core;
+﻿namespace FiscalCode.Core;
 
 public class FiscalCodeBuilder
 {
@@ -9,8 +7,9 @@ public class FiscalCodeBuilder
         string surnamePart = BuildSurnamePart(person.Surname);
         string namePart = BuildNamePart(person.Name);
         string birthDateAndGenderPart = BuildBirthDateAndGenderPart(person.DateOfBirth, person.Gender);
+        string codeOfPlaceOfBirthPart = BuildCodeOfPlaceOfBirthPart(person.PlaceOfBirth);
 
-        return $"{surnamePart}{namePart}{birthDateAndGenderPart}".ToUpper();
+        return $"{surnamePart}{namePart}{birthDateAndGenderPart}{codeOfPlaceOfBirthPart}".ToUpper();
     }
 
     private string BuildSurnamePart(string surname)
@@ -131,5 +130,12 @@ public class FiscalCodeBuilder
         }
 
         return (cons, vow);
+    }
+
+    private string BuildCodeOfPlaceOfBirthPart(string placeOfBirth) 
+    {
+        CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
+
+        return "";
     }
 }

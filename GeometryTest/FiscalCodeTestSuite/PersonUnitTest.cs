@@ -18,6 +18,7 @@ public class PersonUnitTest
             );
 
         Assert.Equal("Cippa", cippa.Name);
+        Assert.Equal("Lippa", cippa.Surname);
     }
 
     //[Fact]
@@ -180,6 +181,23 @@ public class PersonUnitTest
         string birtdateAndGenderPart = fiscalCode.Substring(6, 5);
 
         Assert.Equal(expected, birtdateAndGenderPart);
+    }
+
+    [Theory]
+    [InlineData("Firenze", "D612")]
+    [InlineData("FIRENZE", "D612")]
+    [InlineData("Roma", "H501")]
+    [InlineData("Torino", "L219")]
+    [InlineData("Pescara", "G482")]
+    [InlineData("lsakdfhsklfh", "XYZ")]
+    [InlineData("Austria", "Z102")]
+    [InlineData("Österreich", "Z102")]
+    public void CityCodeAssigner_should_work(string placeOfBirth, string expected)
+    {
+        CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
+
+        string code = cityCodeAssigner.GetCode(placeOfBirth);
+        Assert.Equal(expected, code);
     }
 }
 

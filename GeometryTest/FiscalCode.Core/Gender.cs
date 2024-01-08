@@ -1,7 +1,7 @@
 ﻿namespace FiscalCode.Core;
 
 public enum Gender
-{
-    Male,
-    Female
+{    
+    Male = 0,
+    Female = 1
 }
