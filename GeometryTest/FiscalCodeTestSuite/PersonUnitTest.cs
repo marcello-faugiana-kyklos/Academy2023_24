@@ -1,4 +1,5 @@
 using FiscalCode.Core;
+using FiscalCode.Core.Exceptions;
 
 namespace FiscalCodeTestSuite;
 
@@ -188,16 +189,33 @@ public class PersonUnitTest
     [InlineData("FIRENZE", "D612")]
     [InlineData("Roma", "H501")]
     [InlineData("Torino", "L219")]
-    [InlineData("Pescara", "G482")]
-    [InlineData("lsakdfhsklfh", "XYZ")]
     [InlineData("Austria", "Z102")]
-    [InlineData("Österreich", "Z102")]
+    [InlineData(" Firenze ", "D612")]
     public void CityCodeAssigner_should_work(string placeOfBirth, string expected)
     {
         CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
 
         string code = cityCodeAssigner.GetCode(placeOfBirth);
         Assert.Equal(expected, code);
+    }
+
+
+    [Theory]
+    [InlineData("Pescara")]
+    [InlineData(" Pescara  ")]
+    [InlineData("lsakdfhsklfh")]
+    [InlineData("Österreich")]
+    [InlineData(null)]
+    public void CityCodeAssigner_with_invalid_place_of_birth_should_fail(string? placeOfBirth)
+    {
+        Action action =
+            () =>
+            {
+                CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
+                string code = cityCodeAssigner.GetCode(placeOfBirth);
+            };
+
+        Assert.Throws<PlaceOfBirthDoesNotExistException>(action);
     }
 }
 
