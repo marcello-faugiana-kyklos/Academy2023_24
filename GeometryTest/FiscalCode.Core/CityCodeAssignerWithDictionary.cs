@@ -2,11 +2,11 @@
 
 namespace FiscalCode.Core;
 
-public class CityCodeAssigner
+public class CityCodeAssignerWithDictionary : ICityCodeAssigner
 {
     private readonly Dictionary<string, string> _dictionary;
 
-    public CityCodeAssigner()
+    public CityCodeAssignerWithDictionary()
     {
         _dictionary =
             new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase)

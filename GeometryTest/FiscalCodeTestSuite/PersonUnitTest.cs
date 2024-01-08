@@ -118,7 +118,7 @@ public class PersonUnitTest
             );
 
         FiscalCodeBuilder fiscalCodeBuilder = new FiscalCodeBuilder();
-        string fiscalCode = fiscalCodeBuilder.Build(cippa);
+        string fiscalCode = fiscalCodeBuilder.Build(cippa, new CityCodeAssignerWithSwitch());
 
         string surnamePart = fiscalCode.Substring(0, 3);
 
@@ -152,7 +152,7 @@ public class PersonUnitTest
             );
 
         FiscalCodeBuilder fiscalCodeBuilder = new FiscalCodeBuilder();
-        string fiscalCode = fiscalCodeBuilder.Build(cippa);
+        string fiscalCode = fiscalCodeBuilder.Build(cippa, new CityCodeAssignerWithDictionary());
 
         string namePart = fiscalCode.Substring(3, 3);
 
@@ -177,7 +177,7 @@ public class PersonUnitTest
             );
 
         FiscalCodeBuilder fiscalCodeBuilder = new FiscalCodeBuilder();
-        string fiscalCode = fiscalCodeBuilder.Build(cippa);
+        string fiscalCode = fiscalCodeBuilder.Build(cippa, new CityCodeAssignerWithDictionary());
 
         string birtdateAndGenderPart = fiscalCode.Substring(6, 5);
 
@@ -193,7 +193,7 @@ public class PersonUnitTest
     [InlineData(" Firenze ", "D612")]
     public void CityCodeAssigner_should_work(string placeOfBirth, string expected)
     {
-        CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
+        CityCodeAssignerWithDictionary cityCodeAssigner = new CityCodeAssignerWithDictionary();
 
         string code = cityCodeAssigner.GetCode(placeOfBirth);
         Assert.Equal(expected, code);
@@ -211,11 +211,77 @@ public class PersonUnitTest
         Action action =
             () =>
             {
-                CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
+                CityCodeAssignerWithDictionary cityCodeAssigner = new CityCodeAssignerWithDictionary();
                 string code = cityCodeAssigner.GetCode(placeOfBirth);
             };
 
         Assert.Throws<PlaceOfBirthDoesNotExistException>(action);
+    }
+
+    [Theory]
+    [InlineData("Firenze", "D612")]
+    [InlineData("FIRENZE", "D612")]
+    [InlineData("Roma", "H501")]
+    [InlineData("Torino", "L219")]
+    [InlineData("Austria", "Z102")]
+    [InlineData(" Firenze ", "D612")]
+    public void Build_Place_of_birth_code_with_dictionary_Should_Work(string placeOfBirth, string expected)
+    {
+        var cippa =
+            new Person
+            (
+                "Cippa",
+                "Lippa",
+                new DateOnly(1997, 5, 18),
+                Gender.Female,
+                placeOfBirth
+            );
+
+        FiscalCodeBuilder fiscalCodeBuilder = new FiscalCodeBuilder();
+        string fiscalCode = 
+            fiscalCodeBuilder
+            .Build
+            (
+                cippa, 
+                new CityCodeAssignerWithDictionary()
+            );
+
+        string namePart = fiscalCode.Substring(11, 4);
+
+        Assert.Equal(expected, namePart);
+    }
+
+    [Theory]
+    [InlineData("Firenze", "D612")]
+    [InlineData("FIRENZE", "D612")]
+    [InlineData("Roma", "H501")]
+    [InlineData("Torino", "L219")]
+    [InlineData("Austria", "Z102")]
+    [InlineData(" Firenze ", "D612")]
+    public void Build_Place_of_birth_code_with_switch_Should_Work(string placeOfBirth, string expected)
+    {
+        var cippa =
+            new Person
+            (
+                "Cippa",
+                "Lippa",
+                new DateOnly(1997, 5, 18),
+                Gender.Female,
+                placeOfBirth
+            );
+
+        FiscalCodeBuilder fiscalCodeBuilder = new FiscalCodeBuilder();
+        string fiscalCode =
+            fiscalCodeBuilder
+            .Build
+            (
+                cippa,
+                new CityCodeAssignerWithSwitch()
+            );
+
+        string namePart = fiscalCode.Substring(11, 4);
+
+        Assert.Equal(expected, namePart);
     }
 }
 

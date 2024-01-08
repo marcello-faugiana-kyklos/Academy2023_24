@@ -2,12 +2,18 @@
 
 public class FiscalCodeBuilder
 {
-    public string Build(Person person)
+    public string Build(Person person, ICityCodeAssigner cityCodeAssigner)
     {
         string surnamePart = BuildSurnamePart(person.Surname);
         string namePart = BuildNamePart(person.Name);
         string birthDateAndGenderPart = BuildBirthDateAndGenderPart(person.DateOfBirth, person.Gender);
-        string codeOfPlaceOfBirthPart = BuildCodeOfPlaceOfBirthPart(person.PlaceOfBirth);
+        
+        string codeOfPlaceOfBirthPart = 
+            BuildCodeOfPlaceOfBirthPart
+            (
+                person.PlaceOfBirth, 
+                cityCodeAssigner ?? throw new ArgumentNullException(nameof(cityCodeAssigner))
+            );
 
         return $"{surnamePart}{namePart}{birthDateAndGenderPart}{codeOfPlaceOfBirthPart}".ToUpper();
     }
@@ -132,10 +138,10 @@ public class FiscalCodeBuilder
         return (cons, vow);
     }
 
-    private string BuildCodeOfPlaceOfBirthPart(string placeOfBirth) 
-    {
-        CityCodeAssigner cityCodeAssigner = new CityCodeAssigner();
-
-        return "";
-    }
+    private string BuildCodeOfPlaceOfBirthPart
+    (
+        string placeOfBirth, 
+        ICityCodeAssigner cityCodeAssigner
+    )  =>
+        cityCodeAssigner.GetCode(placeOfBirth);
 }
