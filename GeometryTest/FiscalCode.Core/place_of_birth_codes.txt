@@ -1,0 +1,7 @@
+﻿Castellammare del Golfo | F512
+Firenze | D612
+Torino | L219
+Roma | H501
+Palermo | G273
+Austria | Z102
+Belgio | Z103
