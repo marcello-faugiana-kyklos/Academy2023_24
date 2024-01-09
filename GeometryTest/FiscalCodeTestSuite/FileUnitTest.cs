@@ -34,7 +34,7 @@ public class FileUnitTest
                 line
                 .Split
                 (
-                    new[] { ' ', '|' }, 
+                    '|', 
                     StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
                 );
             
