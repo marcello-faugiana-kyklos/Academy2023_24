@@ -3,7 +3,7 @@ using FiscalCode.Core.Exceptions;
 
 namespace FiscalCodeTestSuite;
 
-public class FicalCodeBuilderUnitTest
+public class FiscalCodeBuilderUnitTest
 {
     [Theory]
     [InlineData("Lippa", "LPP")]
@@ -191,6 +191,39 @@ public class FicalCodeBuilderUnitTest
             (
                 cippa,
                 new CityCodeAssignerWithSwitch()
+            );
+
+        string namePart = fiscalCode.Substring(11, 4);
+
+        Assert.Equal(expected, namePart);
+    }
+
+    [Theory]
+    [InlineData("Firenze", "D612")]
+    [InlineData("FIRENZE", "D612")]
+    [InlineData("Roma", "H501")]
+    [InlineData("Torino", "L219")]
+    [InlineData("Austria", "Z102")]
+    [InlineData(" Firenze ", "D612")]
+    public void Build_Place_of_birth_code_with_dictionary_from_file_Should_Work(string placeOfBirth, string expected)
+    {
+        var cippa =
+            new Person
+            (
+                "Cippa",
+                "Lippa",
+                new DateOnly(1997, 5, 18),
+                Gender.Female,
+                placeOfBirth
+            );
+
+        FiscalCodeBuilder fiscalCodeBuilder = new FiscalCodeBuilder();
+        string fiscalCode =
+            fiscalCodeBuilder
+            .Build
+            (
+                cippa,
+                new CityCodeAssignerWithDictionaryFromFile("place_of_birth_codes.txt")
             );
 
         string namePart = fiscalCode.Substring(11, 4);

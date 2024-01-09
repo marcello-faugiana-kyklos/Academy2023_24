@@ -26,4 +26,10 @@
     <ProjectReference Include="..\FiscalCode.Core\FiscalCode.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="people.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -2,20 +2,96 @@
 
 public class FiscalCodeBuilder
 {
+    private static readonly Dictionary<char, int> cinEven;
+    private static readonly Dictionary<char, int> cinOdd;
+    static FiscalCodeBuilder()
+    {
+        cinOdd =
+            new Dictionary<char, int>()
+            {
+                { '0', 1 },
+                { '1', 0 },
+                { '2', 5 },
+                { '3', 7 },
+                { '4', 9 },
+                { '5',13 },
+                { '6', 15},
+                { '7',17 },
+                { '8',19 },
+                { '9', 21},
+                { 'A', 1 },
+                { 'B', 0 },
+                { 'C', 5 },
+                { 'D', 7 },
+                { 'E', 9 },
+                { 'F',13 },
+                { 'G',15 },
+                { 'H',17 },
+                { 'I',19 },
+                { 'J',21 },
+                { 'K', 2 },
+                { 'L', 4 },
+                { 'M',18 },
+                { 'N',20 },
+                { 'O',11 },
+                { 'P', 3 },
+                { 'Q', 6 },
+                { 'R', 8 },
+                { 'S', 12},
+                { 'T', 14},
+                { 'U',16 },
+                { 'V',10 },
+                { 'W',22 },
+                { 'X',25 },
+                { 'Y',24 },
+                { 'Z',23 }
+            };
+
+        cinEven =
+            new Dictionary<char, int>
+            {
+                { '0', 0 },
+                // to be completed
+            };
+    }
+
     public string Build(Person person, ICityCodeAssigner cityCodeAssigner)
     {
         string surnamePart = BuildSurnamePart(person.Surname);
         string namePart = BuildNamePart(person.Name);
         string birthDateAndGenderPart = BuildBirthDateAndGenderPart(person.DateOfBirth, person.Gender);
-        
-        string codeOfPlaceOfBirthPart = 
+
+        string codeOfPlaceOfBirthPart =
             BuildCodeOfPlaceOfBirthPart
             (
-                person.PlaceOfBirth, 
+                person.PlaceOfBirth,
                 cityCodeAssigner ?? throw new ArgumentNullException(nameof(cityCodeAssigner))
             );
 
-        return $"{surnamePart}{namePart}{birthDateAndGenderPart}{codeOfPlaceOfBirthPart}".ToUpper();
+        string partialCode = $"{surnamePart}{namePart}{birthDateAndGenderPart}{codeOfPlaceOfBirthPart}".ToUpper();
+
+        return partialCode + BuildCINPart(partialCode);
+    }
+
+    private string BuildCINPart(string partialCode)
+    {
+        int sum = 0;
+
+        for (int i = 0; i < partialCode.Length; i++)
+        {
+            if ((i + 1) % 2 == 0)
+            {
+                sum += cinEven[partialCode[i]];
+            }
+            else
+            {
+                sum += cinOdd[partialCode[i]];
+            }
+        }
+
+        int remainder = sum % 26;
+
+        return ('A' + remainder).ToString();
     }
 
     private string BuildSurnamePart(string surname)
@@ -106,7 +182,7 @@ public class FiscalCodeBuilder
             'ì' => 'i',
             'ò' => 'o',
             'ù' => 'u',
-            _ => c 
+            _ => c
         };
 
     private (string Consonants, string Vowels) SplitStringIntoConsonantsAndVowels(string value)
@@ -125,7 +201,7 @@ public class FiscalCodeBuilder
 
             c = FixCharacter(c);
 
-            if  (Vowels.Contains(c))
+            if (Vowels.Contains(c))
             {
                 vow += c;
             }
@@ -140,8 +216,8 @@ public class FiscalCodeBuilder
 
     private string BuildCodeOfPlaceOfBirthPart
     (
-        string placeOfBirth, 
+        string placeOfBirth,
         ICityCodeAssigner cityCodeAssigner
-    )  =>
+    ) =>
         cityCodeAssigner.GetCode(placeOfBirth);
 }

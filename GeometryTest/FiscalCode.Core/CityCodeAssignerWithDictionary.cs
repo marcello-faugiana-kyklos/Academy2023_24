@@ -4,11 +4,11 @@ namespace FiscalCode.Core;
 
 public class CityCodeAssignerWithDictionary : ICityCodeAssigner
 {
-    private readonly Dictionary<string, string> _dictionary;
+    private static readonly Dictionary<string, string> dictionary;
 
-    public CityCodeAssignerWithDictionary()
+    static CityCodeAssignerWithDictionary()
     {
-        _dictionary =
+        dictionary =
             new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase)
             {
                 { "Firenze", "D612" },
@@ -36,7 +36,7 @@ public class CityCodeAssignerWithDictionary : ICityCodeAssigner
 
         //return _dictionary[key];
 
-        if (!_dictionary.TryGetValue(key, out string? code))
+        if (!dictionary.TryGetValue(key, out string? code))
         {
             throw new PlaceOfBirthDoesNotExistException(key);
         }

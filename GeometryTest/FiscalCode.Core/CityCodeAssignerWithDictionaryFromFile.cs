@@ -8,16 +8,6 @@ public class CityCodeAssignerWithDictionaryFromFile : ICityCodeAssigner
 
     public CityCodeAssignerWithDictionaryFromFile(string sourceFilePath)
     {
-        //string[] lines = File.ReadAllLines(sourceFilePath);
-
-        //_dictionary = new Dictionary<string, string>(StringComparer.CurrentCultureIgnoreCase);
-
-        //foreach (string line in lines) 
-        //{
-        //    string[] parts = line.Split('|');
-        //    _dictionary.Add(parts[0].Trim(), parts[1].Trim());
-        //}
-
         _dictionary =         
             File
             .ReadAllLines(sourceFilePath)
