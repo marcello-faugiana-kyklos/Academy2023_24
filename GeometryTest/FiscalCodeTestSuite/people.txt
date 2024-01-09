@@ -1,0 +1,4 @@
+﻿Name | Surname | Date of birth | Gender | Place of birth
+Cippa | Lippa | 1979-07-06 | M | Austria
+Tunlio | Manlio| 1989-01-16 | M | Palermo
+Carla | Brunelli | 1970-02-19 | F | Torino

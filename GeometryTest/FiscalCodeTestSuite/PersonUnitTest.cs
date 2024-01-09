@@ -58,6 +58,26 @@ public class PersonUnitTest
 
         Assert.Throws<ArgumentNullException>(action);
     }
+
+    const string fileName = "people.txt";
+
+    [Fact]
+    public void Read_all_people_from_file_with_classic_code_should_work()
+    {
+        Person[] people = null; // add code to read and parse the people in the file
+
+        Assert.Equal(3, people.Length);
+
+        Assert.Equal("Cippa", people[0].Name);
+        // other asserts 
+    }
+
+    [Fact]
+    public void Read_all_people_from_file_with_LINQ_should_work()
+    {    
+
+
+    }
 }
 
 
